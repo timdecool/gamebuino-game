@@ -32,7 +32,5 @@ void drawRoom()
 
 void drawWall(int i, int j)
 {
-    gb.display.fillRect(i * GRID_SIZE, j * GRID_SIZE, gb.display.width() / GRID_SIZE, gb.display.height() / GRID_SIZE);
-void drawWall(int i, int j) {
     gb.display.fillRect(i*WALL_WIDTH, j*WALL_HEIGHT, WALL_WIDTH, WALL_HEIGHT);
 }
