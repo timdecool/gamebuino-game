@@ -57,6 +57,7 @@ void update()
 
 void display()
 {
+  gb.display.fill(LIGHTGREEN);
   drawPlayer();
   drawRoom();
 }
