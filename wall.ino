@@ -27,6 +27,15 @@ int pattern[GRID_SIZE][GRID_SIZE] = {
     {0, 0, 0, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0},
     {1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 5, 0, 0}};
+
+
+int getPointValue(int x, int y) {
+    int gridX = x / WALL_WIDTH;
+    int gridY = y / WALL_HEIGHT;
+    gb.display.print(pattern[gridY][gridX]);
+    return pattern[gridY][gridX];
+}
+
 void drawRoom()
 {
     for (int i = 0; i < GRID_SIZE; i++)
