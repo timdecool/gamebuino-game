@@ -1,12 +1,3 @@
-extern const int GRID_SIZE;
-extern const int TILE_WIDTH;
-extern const int TILE_HEIGHT;
-extern int pattern[][16];
-
-const int MAX_ROCKS = 10;
-const int ROCK_SIZE = 4;
-Element rocks[MAX_ROCKS];
-
 void initRocks() {
     int found = 0;
     for(int y = 0; y < GRID_SIZE; y++) {

@@ -1,12 +1,3 @@
-
-// CONST
-bool PLAYER_START_POSITION = false;
-extern const int GRID_SIZE;
-extern const int TILE_WIDTH;
-extern const int TILE_HEIGHT;
-extern int pattern[][16];
-extern Element rocks[10];
-
 bool canMove(Point position, Element element) 
 {
     // check x screen bounds

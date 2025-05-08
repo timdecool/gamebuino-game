@@ -1,26 +1,5 @@
 #include <Gamebuino-Meta.h>
 
-
-// CONST
-int PLAYER_HEIGHT = 3;
-int PLAYER_WIDTH = 3;
-bool GAME_END = false;
-extern const int GRID_SIZE;
-extern const int TILE_WIDTH;
-extern const int TILE_HEIGHT;
-extern int pattern[][16];
-extern bool PLAYER_START_POSITION;
-
-// MAP_DATA
-const int END = -2;
-const int START = -1;
-const int FLOOR = 0;
-const int WALL = 1;
-const int ROCK = 2;
-const int HOLE = 3;
-
-int currentId = 0;
-
 // STRUCT
 struct Point
 {
@@ -36,13 +15,57 @@ struct Element
   int height;
 };
 
-// VAR
+// GAME DATA
+int currentId = 0;
+bool GAME_END = false;
+
+// PLAYER DATA
+bool PLAYER_START_POSITION = false;
+int PLAYER_HEIGHT = 3;
+int PLAYER_WIDTH = 3;
+
 Element player = {
   ++currentId,
   { (gb.display.width() - PLAYER_WIDTH / 2) / 2, (gb.display.height() - PLAYER_HEIGHT / 2) / 2},
   PLAYER_WIDTH,
   PLAYER_HEIGHT
 };
+
+// MAP DATA
+extern int pattern[][16];
+const int GRID_SIZE = 16;
+const int TILE_WIDTH = gb.display.width() / GRID_SIZE;
+const int TILE_HEIGHT = gb.display.height() / GRID_SIZE;
+
+const int END = -2;
+const int START = -1;
+const int FLOOR = 0;
+const int WALL = 1;
+const int ROCK = 2;
+const int HOLE = 3;
+
+int pattern[GRID_SIZE][GRID_SIZE] = {
+    {-1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+    {1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 1, 0, 0, 0, 0},
+    {1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1},
+    {0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0, 1, 0, 0, 0, 0},
+    {1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+    {1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0},
+    {1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0},
+    {1, 0, 2, 0, 1, 0, 1, 3, 1, 0, 0, 0, 0, 0, 1, 0},
+    {1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0},
+    {1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0},
+    {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+    {0, 0, 0, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0},
+    {1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, -2, 0, 0}};
+
+// ROCK DATA
+const int MAX_ROCKS = 10;
+const int ROCK_SIZE = 4;
+Element rocks[MAX_ROCKS];
 
 // GAME FUNCTIONS
 void setup()
@@ -104,7 +127,7 @@ void checkWinCondition()
   if (playerGridX >= 0 && playerGridX < GRID_SIZE &&
       playerGridY >= 0 && playerGridY < GRID_SIZE)
   {
-    if (pattern[playerGridY][playerGridX] == 5)
+    if (pattern[playerGridY][playerGridX] == END)
     {
       GAME_END = true;
     }
