@@ -13,6 +13,7 @@ struct Point
 
 // VAR
 Point player = {(gb.display.width() - PLAYER_WIDTH / 2) / 2, (gb.display.height() - PLAYER_HEIGHT / 2) / 2};
+Point newPos = player;
 
 // GAME FUNCTIONS
 void setup()
@@ -22,8 +23,7 @@ void setup()
 
 void loop()
 {
-  while (!gb.update())
-    ;
+  while (!gb.update());
   gb.display.clear();
 
   input();
@@ -51,8 +51,7 @@ void input()
   }
 }
 
-void update()
-{
+void update() {
 }
 
 void display()
