@@ -1,10 +1,11 @@
 extern const int GRID_SIZE;
-extern const int WALL_WIDTH;
-extern const int WALL_HEIGHT;
+extern const int TILE_WIDTH;
+extern const int TILE_HEIGHT;
 extern int pattern[][16];
 
-int ROCK_SIZE = 4;
-Element rocks[10];
+const int MAX_ROCKS = 10;
+const int ROCK_SIZE = 4;
+Element rocks[MAX_ROCKS];
 
 void initRocks() {
     int found = 0;
@@ -13,7 +14,7 @@ void initRocks() {
             if(pattern[y][x] == 2) {
                 rocks[found] = {
                     ++currentId,
-                    { x * WALL_WIDTH, y * WALL_HEIGHT },
+                    { x * TILE_WIDTH, y * TILE_HEIGHT },
                     ROCK_SIZE,
                     ROCK_SIZE
                 };
@@ -26,8 +27,10 @@ void initRocks() {
 
 bool isRockAhead(Point position, Element element) {
     bool isRock = false;
-    for(int i = 0; i < 10; i++) {
-        if(rocks[i].width > 0 && gb.collide.rectRect(position.x, position.y, element.width, element.height, rocks[i].position.x, rocks[i].position.y, rocks[i].width, rocks[i].height) && element.id != rocks[i].id)
+    for(int i = 0; i < MAX_ROCKS; i++) {
+        if(rocks[i].width > 0 
+        && gb.collide.rectRect(position.x, position.y, element.width, element.height, rocks[i].position.x, rocks[i].position.y, rocks[i].width, rocks[i].height) 
+        && element.id != rocks[i].id)
         {
             isRock = true;
             break;
@@ -37,7 +40,7 @@ bool isRockAhead(Point position, Element element) {
 }
 
 Element pushRock(Point position, Element element, int direction) {
-    for(int i = 0; i < 10; i++) {
+    for(int i = 0; i < MAX_ROCKS; i++) {
         if(gb.collide.rectRect(position.x, position.y, element.width, element.height, rocks[i].position.x, rocks[i].position.y, rocks[i].width, rocks[i].height))
         {
             rocks[i].position = move(direction, rocks[i]);
@@ -54,16 +57,16 @@ bool isInHole(Element element) {
 }
 
 void fillHoles() {
-    for(int i = 0; i < 10; i++) {
+    for(int i = 0; i < MAX_ROCKS; i++) {
         if(isInHole(rocks[i])) {
-            pattern[rocks[i].position.y / WALL_HEIGHT][rocks[i].position.x / WALL_WIDTH] = 0;
+            pattern[rocks[i].position.y / TILE_HEIGHT][rocks[i].position.x / TILE_WIDTH] = 0;
             rocks[i].width = 0;            
         }
     }
 }
 
 void drawRocks() {
-    for(int i = 0; i < 10; i++) {
+    for(int i = 0; i < MAX_ROCKS; i++) {
         if(rocks[i].width != 0) {
             drawRock(rocks[i]);
         }

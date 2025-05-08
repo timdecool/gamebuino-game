@@ -1,14 +1,25 @@
 #include <Gamebuino-Meta.h>
 
+
+
 // CONST
 int PLAYER_HEIGHT = 3;
 int PLAYER_WIDTH = 3;
 bool GAME_END = false;
 extern const int GRID_SIZE;
-extern const int WALL_WIDTH;
-extern const int WALL_HEIGHT;
+extern const int TILE_WIDTH;
+extern const int TILE_HEIGHT;
 extern int pattern[][16];
 extern bool PLAYER_START_POSITION;
+
+// MAP_DATA
+const int END = -2;
+const int START = -1;
+const int FLOOR = 0;
+const int WALL = 1;
+const int ROCK = 2;
+const int HOLE = 3;
+
 int currentId = 0;
 
 // STRUCT
@@ -88,8 +99,8 @@ void display()
 
 void checkWinCondition()
 {
-  int playerGridX = player.position.x / WALL_WIDTH;
-  int playerGridY = player.position.y / WALL_HEIGHT;
+  int playerGridX = player.position.x / TILE_WIDTH;
+  int playerGridY = player.position.y / TILE_HEIGHT;
 
   if (playerGridX >= 0 && playerGridX < GRID_SIZE &&
       playerGridY >= 0 && playerGridY < GRID_SIZE)

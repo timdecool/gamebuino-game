@@ -2,8 +2,8 @@
 // CONST
 bool PLAYER_START_POSITION = false;
 extern const int GRID_SIZE;
-extern const int WALL_WIDTH;
-extern const int WALL_HEIGHT;
+extern const int TILE_WIDTH;
+extern const int TILE_HEIGHT;
 extern int pattern[][16];
 extern Element rocks[10];
 
@@ -23,22 +23,22 @@ bool canMove(Point position, Element element)
     // for rocks
     if(element.id > 1) {
         return !isRockAhead(position, element)
-        && (getPointValue(position.x, position.y) <= 0 
-        && getPointValue(position.x + element.width - 1, position.y) <= 0
-        && getPointValue(position.x + element.width - 1, position.y + element.height - 1) <= 0
-        && getPointValue(position.x, position.y + element.height - 1) <= 0)
-        || (getPointValue(position.x, position.y) == 3 
-        || getPointValue(position.x + element.width - 1, position.y) == 3
-        || getPointValue(position.x + element.width - 1, position.y + element.height - 1) == 3
-        || getPointValue(position.x, position.y + element.height - 1) == 3);
+        && (getPointValue(position.x, position.y) <= FLOOR 
+        && getPointValue(position.x + element.width - 1, position.y) <= FLOOR
+        && getPointValue(position.x + element.width - 1, position.y + element.height - 1) <= FLOOR
+        && getPointValue(position.x, position.y + element.height - 1) <= FLOOR)
+        || (getPointValue(position.x, position.y) == HOLE 
+        || getPointValue(position.x + element.width - 1, position.y) == HOLE
+        || getPointValue(position.x + element.width - 1, position.y + element.height - 1) == HOLE
+        || getPointValue(position.x, position.y + element.height - 1) == HOLE);
     }
     // for player
     else {
         return !isRockAhead(position, element)
-        && getPointValue(position.x, position.y) <= 0 
-        && getPointValue(position.x + element.width - 1, position.y) <= 0
-        && getPointValue(position.x + element.width - 1, position.y + element.height - 1) <= 0
-        && getPointValue(position.x, position.y + element.height - 1) <= 0;
+        && getPointValue(position.x, position.y) <= FLOOR 
+        && getPointValue(position.x + element.width - 1, position.y) <= FLOOR
+        && getPointValue(position.x + element.width - 1, position.y + element.height - 1) <= FLOOR
+        && getPointValue(position.x, position.y + element.height - 1) <= FLOOR;
     }
 
 }
@@ -88,8 +88,8 @@ void drawPlayer()
             {
                 if (pattern[y][x] == -1)
                 {
-                    player.position.x = x * WALL_WIDTH + (WALL_WIDTH - player.width) / 2;
-                    player.position.y = y * WALL_HEIGHT + (WALL_HEIGHT - player.height) / 2;
+                    player.position.x = x * TILE_WIDTH + (TILE_WIDTH - player.width) / 2;
+                    player.position.y = y * TILE_HEIGHT + (TILE_HEIGHT - player.height) / 2;
                     PLAYER_START_POSITION = true;
                     break;
                 }

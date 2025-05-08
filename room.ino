@@ -1,14 +1,6 @@
 const int GRID_SIZE = 16;
-const int WALL_WIDTH = gb.display.width() / GRID_SIZE;
-const int WALL_HEIGHT = gb.display.height() / GRID_SIZE;
-const int ROCK_WIDTH = gb.display.width() / GRID_SIZE;
-const int ROCK_HEIGHT = gb.display.height() / GRID_SIZE;
-const int HOLE_WIDTH = gb.display.width() / GRID_SIZE;
-const int HOLE_HEIGHT = gb.display.height() / GRID_SIZE;
-const int START_HEIGHT = gb.display.height() / GRID_SIZE;
-const int START_WIDTH = gb.display.width() / GRID_SIZE;
-const int END_HEIGHT = gb.display.height() / GRID_SIZE;
-const int END_WIDTH = gb.display.width() / GRID_SIZE;
+const int TILE_WIDTH = gb.display.width() / GRID_SIZE;
+const int TILE_HEIGHT = gb.display.height() / GRID_SIZE;
 
 int pattern[GRID_SIZE][GRID_SIZE] = {
     {-1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0},
@@ -30,9 +22,8 @@ int pattern[GRID_SIZE][GRID_SIZE] = {
 
 
 int getPointValue(int x, int y) {
-    int gridX = x / WALL_WIDTH;
-    int gridY = y / WALL_HEIGHT;
-    gb.display.print(pattern[gridY][gridX]);
+    int gridX = x / TILE_WIDTH;
+    int gridY = y / TILE_HEIGHT;
     return pattern[gridY][gridX];
 }
 
@@ -42,23 +33,19 @@ void drawRoom()
     {
         for (int j = 0; j < GRID_SIZE; j++)
         {
-            if (pattern[j][i] == 1)
+            if (pattern[j][i] == WALL)
             {
                 drawWall(i, j);
             }
-            else if (pattern[j][i] == 2)
-            {
-                drawRocks(i, j);
-            }
-            else if (pattern[j][i] == 3)
+            else if (pattern[j][i] == HOLE)
             {
                 drawHole(i, j);
             }
-            else if (pattern[j][i] == -1)
+            else if (pattern[j][i] == START)
             {
                 drawStart(i, j);
             }
-            else if (pattern[j][i] == -2)
+            else if (pattern[j][i] == END)
             {
                 drawEnd(i, j);
             }
@@ -69,27 +56,22 @@ void drawRoom()
 void drawWall(int i, int j)
 {
     gb.display.setColor(BROWN);
-    gb.display.fillRect(i * WALL_WIDTH, j * WALL_HEIGHT, WALL_WIDTH, WALL_HEIGHT);
+    gb.display.fillRect(i * TILE_WIDTH, j * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
 }
 
-void drawRocks(int i, int j)
-{
-    // gb.display.setColor(DARKGRAY);
-    // gb.display.fillRect(i * WALL_WIDTH, j * WALL_HEIGHT, ROCK_WIDTH, ROCK_HEIGHT);
-}
 void drawHole(int i, int j)
 {
     gb.display.setColor(BLACK);
-    gb.display.fillRect(i * HOLE_WIDTH, j * HOLE_HEIGHT, WALL_WIDTH, WALL_HEIGHT);
+    gb.display.fillRect(i * TILE_WIDTH, j * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
 }
 
 void drawStart(int i, int j)
 {
     gb.display.setColor(ORANGE);
-    gb.display.fillRect(i * START_WIDTH, j * START_HEIGHT, START_WIDTH, START_HEIGHT);
+    gb.display.fillRect(i * TILE_WIDTH, j * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
 }
 void drawEnd(int i, int j)
 {
     gb.display.setColor(RED);
-    gb.display.fillRect(i * END_WIDTH, j * END_HEIGHT, END_WIDTH, END_HEIGHT);
+    gb.display.fillRect(i * TILE_WIDTH, j * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
 }
