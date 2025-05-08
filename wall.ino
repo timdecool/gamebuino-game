@@ -11,13 +11,13 @@ const int END_HEIGHT = gb.display.height() / GRID_SIZE;
 const int END_WIDTH = gb.display.width() / GRID_SIZE;
 
 int pattern[GRID_SIZE][GRID_SIZE] = {
-    {-1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0},
-    {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0},
-    {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0},
-    {1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0, 1, 0, 0, 0},
-    {1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1},
-    {0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 1, 0, 0, 0, 0, 0},
-    {1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0},
+    {-1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+    {1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 1, 0, 0, 0, 0},
+    {1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1},
+    {0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0, 1, 0, 0, 0, 0},
+    {1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
     {1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0},
     {1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0},
     {1, 0, 2, 0, 1, 0, 1, 3, 1, 0, 0, 0, 0, 0, 1, 0},
@@ -74,8 +74,8 @@ void drawWall(int i, int j)
 
 void drawRocks(int i, int j)
 {
-    gb.display.setColor(DARKGRAY);
-    gb.display.fillRect(i * WALL_WIDTH, j * WALL_HEIGHT, ROCK_WIDTH, ROCK_HEIGHT);
+    // gb.display.setColor(DARKGRAY);
+    // gb.display.fillRect(i * WALL_WIDTH, j * WALL_HEIGHT, ROCK_WIDTH, ROCK_HEIGHT);
 }
 void drawHole(int i, int j)
 {

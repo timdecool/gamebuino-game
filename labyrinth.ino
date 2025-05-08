@@ -9,6 +9,7 @@ extern const int WALL_WIDTH;
 extern const int WALL_HEIGHT;
 extern int pattern[][16];
 extern bool PLAYER_START_POSITION;
+int currentId = 0;
 
 // STRUCT
 struct Point
@@ -19,6 +20,7 @@ struct Point
 
 struct Element 
 {
+  int id;
   Point position;
   int width;
   int height;
@@ -26,6 +28,7 @@ struct Element
 
 // VAR
 Element player = {
+  ++currentId,
   { (gb.display.width() - PLAYER_WIDTH / 2) / 2, (gb.display.height() - PLAYER_HEIGHT / 2) / 2},
   PLAYER_WIDTH,
   PLAYER_HEIGHT
@@ -35,6 +38,7 @@ Element player = {
 void setup()
 {
   gb.begin();
+  initRocks();
 }
 
 void loop()
@@ -57,6 +61,13 @@ void loop()
 
 void input()
 {
+  if(gb.buttons.repeat(BUTTON_A, 0)) {
+    if (gb.buttons.repeat(BUTTON_LEFT, 0)) push(1, player);
+    else if (gb.buttons.repeat(BUTTON_UP, 0)) push(2, player);
+    else if (gb.buttons.repeat(BUTTON_RIGHT, 0)) push(3, player);
+    else if (gb.buttons.repeat(BUTTON_DOWN, 0)) push(4, player);
+  }
+
   if (gb.buttons.repeat(BUTTON_LEFT, 0)) player.position = move(1, player);
   else if (gb.buttons.repeat(BUTTON_UP, 0)) player.position = move(2, player);
   else if (gb.buttons.repeat(BUTTON_RIGHT, 0)) player.position = move(3, player);
@@ -70,6 +81,7 @@ void display()
 {
   gb.display.fill(LIGHTGREEN);
   drawRoom();
+  drawRocks();
   drawPlayer();
 }
 
