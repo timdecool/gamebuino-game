@@ -11,7 +11,7 @@ const int END_HEIGHT = gb.display.height() / GRID_SIZE;
 const int END_WIDTH = gb.display.width() / GRID_SIZE;
 
 int pattern[GRID_SIZE][GRID_SIZE] = {
-    {4, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0},
+    {-1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0},
     {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0},
     {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0},
     {1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0, 1, 0, 0, 0},
@@ -26,7 +26,7 @@ int pattern[GRID_SIZE][GRID_SIZE] = {
     {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     {0, 0, 0, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0},
     {1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 5, 0, 0}};
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, -2, 0, 0}};
 
 
 int getPointValue(int x, int y) {
@@ -54,11 +54,11 @@ void drawRoom()
             {
                 drawHole(i, j);
             }
-            else if (pattern[j][i] == 4)
+            else if (pattern[j][i] == -1)
             {
                 drawStart(i, j);
             }
-            else if (pattern[j][i] == 5)
+            else if (pattern[j][i] == -2)
             {
                 drawEnd(i, j);
             }

@@ -6,36 +6,44 @@ extern const int WALL_WIDTH;
 extern const int WALL_HEIGHT;
 extern int pattern[][16];
 
-void left()
+bool canMove(Point position) 
 {
-    newPos.x = player.x - 1;
-    gb.display.setCursor(6, 6);
-    if(newPos.x > 0 && !getPointValue(newPos.x - 1, newPos.y) == 1) {
-        player.x = newPos.x;
+    // check x screen bounds
+    if(position.x < 0 || position.x + PLAYER_WIDTH > gb.display.width()) {
+        return false;
     }
+
+    // check y screen bounds
+    if(position.y < 0 || position.y + PLAYER_HEIGHT > gb.display.height()) {
+        return false;
+    }
+
+    // check collision with obstacles
+    return getPointValue(position.x, position.y) <= 0 
+        && getPointValue(position.x + PLAYER_WIDTH, position.y) <= 0
+        && getPointValue(position.x + PLAYER_WIDTH, position.y + PLAYER_HEIGHT) <= 0
+        && getPointValue(position.x, position.y + PLAYER_HEIGHT) <= 0;
 }
 
-void right()
+void move(int direction) 
 {
-    newPos.x = player.x + 1;
-    if(newPos.x + PLAYER_WIDTH < gb.display.width() && !getPointValue(newPos.x + PLAYER_WIDTH, newPos.y) == 1) {
-        player.x = newPos.x;
+    Point newPos;
+    switch(direction) {
+        case 1:
+            newPos = { player.x - 1, player.y };
+            break;
+        case 2:
+            newPos = { player.x, player.y - 1 };
+            break;
+        case 3:
+            newPos = { player.x + 1, player.y };
+            break;
+        case 4:
+            newPos = { player.x, player.y + 1 };
+            break;
     }
-}
-
-void up()
-{
-    newPos.y = player.y - 1;
-    if(newPos.y >= 0 && !getPointValue(newPos.x, newPos.y - 1) == 1) {
-        player.y = newPos.y;
-    }
-}
-
-void down()
-{
-    newPos.y = player.y + 1;
-    if(newPos.y + PLAYER_HEIGHT <= gb.display.height() && !getPointValue(newPos.x, newPos.y + PLAYER_HEIGHT) == 1) {
-        player.y = newPos.y;
+    if(canMove(newPos)) {
+        player = newPos;
     }
 }
 
@@ -47,7 +55,7 @@ void drawPlayer()
         {
             for (int x = 0; x < GRID_SIZE; x++)
             {
-                if (pattern[y][x] == 4)
+                if (pattern[y][x] == -1)
                 {
                     player.x = x * WALL_WIDTH + (WALL_WIDTH - PLAYER_WIDTH) / 2;
                     player.y = y * WALL_HEIGHT + (WALL_HEIGHT - PLAYER_HEIGHT) / 2;
@@ -59,5 +67,6 @@ void drawPlayer()
                 break;
         }
     }
+    gb.display.setColor(WHITE);
     gb.display.fillRect(player.x, player.y, PLAYER_WIDTH, PLAYER_HEIGHT);
 }

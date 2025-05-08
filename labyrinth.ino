@@ -19,7 +19,6 @@ struct Point
 
 // VAR
 Point player = {(gb.display.width() - PLAYER_WIDTH / 2) / 2, (gb.display.height() - PLAYER_HEIGHT / 2) / 2};
-Point newPos = player;
 
 // GAME FUNCTIONS
 void setup()
@@ -47,22 +46,10 @@ void loop()
 
 void input()
 {
-  if (gb.buttons.repeat(BUTTON_LEFT, 0))
-  {
-    left();
-  }
-  else if (gb.buttons.repeat(BUTTON_RIGHT, 0))
-  {
-    right();
-  }
-  else if (gb.buttons.repeat(BUTTON_UP, 0))
-  {
-    up();
-  }
-  else if (gb.buttons.repeat(BUTTON_DOWN, 0))
-  {
-    down();
-  }
+  if (gb.buttons.repeat(BUTTON_LEFT, 0)) move(1);
+  else if (gb.buttons.repeat(BUTTON_UP, 0)) move(2);
+  else if (gb.buttons.repeat(BUTTON_RIGHT, 0)) move(3);
+  else if (gb.buttons.repeat(BUTTON_DOWN, 0)) move(4);
 }
 
 void update() {
@@ -71,8 +58,8 @@ void update() {
 void display()
 {
   gb.display.fill(LIGHTGREEN);
-  drawPlayer();
   drawRoom();
+  drawPlayer();
 }
 
 void checkWinCondition()
