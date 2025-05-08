@@ -59,7 +59,7 @@ bool isInHole(Element element) {
 void fillHoles() {
     for(int i = 0; i < MAX_ROCKS; i++) {
         if(isInHole(rocks[i])) {
-            pattern[rocks[i].position.y / TILE_HEIGHT][rocks[i].position.x / TILE_WIDTH] = 0;
+            pattern[rocks[i].position.y / TILE_HEIGHT][rocks[i].position.x / TILE_WIDTH] = FLOOR;
             rocks[i].width = 0;            
         }
     }

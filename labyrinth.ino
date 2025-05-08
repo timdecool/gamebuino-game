@@ -1,7 +1,6 @@
 #include <Gamebuino-Meta.h>
 
 
-
 // CONST
 int PLAYER_HEIGHT = 3;
 int PLAYER_WIDTH = 3;
