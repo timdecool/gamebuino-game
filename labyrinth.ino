@@ -17,8 +17,19 @@ struct Point
   int y;
 };
 
+struct Element 
+{
+  Point position;
+  int width;
+  int height;
+};
+
 // VAR
-Point player = {(gb.display.width() - PLAYER_WIDTH / 2) / 2, (gb.display.height() - PLAYER_HEIGHT / 2) / 2};
+Element player = {
+  { (gb.display.width() - PLAYER_WIDTH / 2) / 2, (gb.display.height() - PLAYER_HEIGHT / 2) / 2},
+  PLAYER_WIDTH,
+  PLAYER_HEIGHT
+};
 
 // GAME FUNCTIONS
 void setup()
@@ -46,10 +57,10 @@ void loop()
 
 void input()
 {
-  if (gb.buttons.repeat(BUTTON_LEFT, 0)) move(1);
-  else if (gb.buttons.repeat(BUTTON_UP, 0)) move(2);
-  else if (gb.buttons.repeat(BUTTON_RIGHT, 0)) move(3);
-  else if (gb.buttons.repeat(BUTTON_DOWN, 0)) move(4);
+  if (gb.buttons.repeat(BUTTON_LEFT, 0)) player.position = move(1, player);
+  else if (gb.buttons.repeat(BUTTON_UP, 0)) player.position = move(2, player);
+  else if (gb.buttons.repeat(BUTTON_RIGHT, 0)) player.position = move(3, player);
+  else if (gb.buttons.repeat(BUTTON_DOWN, 0)) player.position = move(4, player);
 }
 
 void update() {
@@ -64,8 +75,8 @@ void display()
 
 void checkWinCondition()
 {
-  int playerGridX = player.x / WALL_WIDTH;
-  int playerGridY = player.y / WALL_HEIGHT;
+  int playerGridX = player.position.x / WALL_WIDTH;
+  int playerGridY = player.position.y / WALL_HEIGHT;
 
   if (playerGridX >= 0 && playerGridX < GRID_SIZE &&
       playerGridY >= 0 && playerGridY < GRID_SIZE)
