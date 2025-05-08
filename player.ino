@@ -20,9 +20,9 @@ bool canMove(Point position, Element element)
 
     // check collision with obstacles
     return getPointValue(position.x, position.y) <= 0 
-        && getPointValue(position.x + element.width, position.y) <= 0
-        && getPointValue(position.x + element.width, position.y + element.height) <= 0
-        && getPointValue(position.x, position.y + element.height) <= 0;
+        && getPointValue(position.x + element.width - 1, position.y) <= 0
+        && getPointValue(position.x + element.width - 1, position.y + element.height - 1) <= 0
+        && getPointValue(position.x, position.y + element.height - 1) <= 0;
 }
 
 Point move(int direction, Element element) 
