@@ -75,6 +75,7 @@ void input()
 }
 
 void update() {
+  fillHoles();
 }
 
 void display()

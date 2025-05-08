@@ -20,11 +20,27 @@ bool canMove(Point position, Element element)
     }
 
     // check collision with obstacles
-    return !isRock(position, element)
+    // for rocks
+    if(element.id > 1) {
+        return !isRockAhead(position, element)
+        && (getPointValue(position.x, position.y) <= 0 
+        && getPointValue(position.x + element.width - 1, position.y) <= 0
+        && getPointValue(position.x + element.width - 1, position.y + element.height - 1) <= 0
+        && getPointValue(position.x, position.y + element.height - 1) <= 0)
+        || (getPointValue(position.x, position.y) == 3 
+        || getPointValue(position.x + element.width - 1, position.y) == 3
+        || getPointValue(position.x + element.width - 1, position.y + element.height - 1) == 3
+        || getPointValue(position.x, position.y + element.height - 1) == 3);
+    }
+    // for player
+    else {
+        return !isRockAhead(position, element)
         && getPointValue(position.x, position.y) <= 0 
-        && getPointValue(position.x + element.width - 1 - 1, position.y) <= 0
-        && getPointValue(position.x + element.width - 1 - 1, position.y + element.height - 1 - 1) <= 0
-        && getPointValue(position.x, position.y + element.height - 1 - 1) <= 0;
+        && getPointValue(position.x + element.width - 1, position.y) <= 0
+        && getPointValue(position.x + element.width - 1, position.y + element.height - 1) <= 0
+        && getPointValue(position.x, position.y + element.height - 1) <= 0;
+    }
+
 }
 
 Point getNewPosition(int direction, Element element) {
@@ -57,7 +73,7 @@ Point move(int direction, Element element)
 void push(int direction, Element element) 
 {
     Point newPos = getNewPosition(direction, element);
-    if(isRock(newPos, element)) {
+    if(isRockAhead(newPos, element)) {
         pushRock(newPos, element, direction);
     }
 }

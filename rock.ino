@@ -24,10 +24,10 @@ void initRocks() {
     }
 }
 
-bool isRock(Point position, Element element) {
+bool isRockAhead(Point position, Element element) {
     bool isRock = false;
     for(int i = 0; i < 10; i++) {
-        if(gb.collide.rectRect(position.x, position.y, element.width, element.height, rocks[i].position.x, rocks[i].position.y, rocks[i].width, rocks[i].height) && element.id != rocks[i].id)
+        if(rocks[i].width > 0 && gb.collide.rectRect(position.x, position.y, element.width, element.height, rocks[i].position.x, rocks[i].position.y, rocks[i].width, rocks[i].height) && element.id != rocks[i].id)
         {
             isRock = true;
             break;
@@ -42,6 +42,22 @@ Element pushRock(Point position, Element element, int direction) {
         {
             rocks[i].position = move(direction, rocks[i]);
             break;
+        }
+    }
+}
+
+bool isInHole(Element element) {
+    return getPointValue(element.position.x, element.position.y) == 3 
+        && getPointValue(element.position.x + element.width - 1, element.position.y) == 3
+        && getPointValue(element.position.x + element.width - 1, element.position.y + element.height - 1) == 3
+        && getPointValue(element.position.x, element.position.y + element.height - 1) == 3;
+}
+
+void fillHoles() {
+    for(int i = 0; i < 10; i++) {
+        if(isInHole(rocks[i])) {
+            pattern[rocks[i].position.y / WALL_HEIGHT][rocks[i].position.x / WALL_WIDTH] = 0;
+            rocks[i].width = 0;            
         }
     }
 }
