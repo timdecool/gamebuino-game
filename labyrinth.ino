@@ -137,7 +137,7 @@ void displayWinScreen()
   gb.display.println("  le labyrinthe!");
   gb.display.println("");
   gb.display.println("  Appuyez sur A");
-  gb.display.println("  pour recommencer");
+  gb.display.println("  pour continuer");
 
   if (gb.buttons.pressed(BUTTON_A))
   {
