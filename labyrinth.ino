@@ -15,14 +15,17 @@ struct Element
   int height;
 };
 
+
+
 // GAME DATA
+const int MAX_LEVEL = 10;
 int currentId = 0;
-bool GAME_END = false;
+int currentLevel = 0;
+bool levelEnd = false;
 
 // PLAYER DATA
-bool PLAYER_START_POSITION = false;
-int PLAYER_HEIGHT = 3;
-int PLAYER_WIDTH = 3;
+const int PLAYER_HEIGHT = 3;
+const int PLAYER_WIDTH = 3;
 
 Element player = {
   ++currentId,
@@ -32,8 +35,9 @@ Element player = {
 };
 
 // MAP DATA
-extern int pattern[][16];
+
 const int GRID_SIZE = 16;
+extern const int maps[MAX_LEVEL][GRID_SIZE][GRID_SIZE];
 const int TILE_WIDTH = gb.display.width() / GRID_SIZE;
 const int TILE_HEIGHT = gb.display.height() / GRID_SIZE;
 
@@ -44,23 +48,7 @@ const int WALL = 1;
 const int ROCK = 2;
 const int HOLE = 3;
 
-int pattern[GRID_SIZE][GRID_SIZE] = {
-    {-1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-    {1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
-    {1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
-    {1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 1, 0, 0, 0, 0},
-    {1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1},
-    {0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0, 1, 0, 0, 0, 0},
-    {1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-    {1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0},
-    {1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0},
-    {1, 0, 2, 0, 1, 0, 1, 3, 1, 0, 0, 0, 0, 0, 1, 0},
-    {1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0},
-    {1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0},
-    {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {0, 0, 0, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0},
-    {1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, -2, 0, 0}};
+int pattern[GRID_SIZE][GRID_SIZE];
 
 // ROCK DATA
 const int MAX_ROCKS = 10;
@@ -71,7 +59,7 @@ Element rocks[MAX_ROCKS];
 void setup()
 {
   gb.begin();
-  initRocks();
+  initLevel();
 }
 
 void loop()
@@ -79,7 +67,7 @@ void loop()
   while (!gb.update());
   gb.display.clear();
 
-  if (GAME_END)
+  if (levelEnd)
   {
     displayWinScreen();
   }
@@ -105,6 +93,10 @@ void input()
   else if (gb.buttons.repeat(BUTTON_UP, 0)) player.position = move(2, player);
   else if (gb.buttons.repeat(BUTTON_RIGHT, 0)) player.position = move(3, player);
   else if (gb.buttons.repeat(BUTTON_DOWN, 0)) player.position = move(4, player);
+
+  if(gb.buttons.pressed(BUTTON_B)) {
+    initLevel();
+  }
 }
 
 void update() {
@@ -129,7 +121,7 @@ void checkWinCondition()
   {
     if (pattern[playerGridY][playerGridX] == END)
     {
-      GAME_END = true;
+      levelEnd = true;
     }
   }
 }
@@ -141,7 +133,7 @@ void displayWinScreen()
   gb.display.println("");
   gb.display.println("  FELICITATIONS!");
   gb.display.println("");
-  gb.display.println("  Vous avez terminé");
+  gb.display.println("  Vous avez fini");
   gb.display.println("  le labyrinthe!");
   gb.display.println("");
   gb.display.println("  Appuyez sur A");
@@ -149,7 +141,10 @@ void displayWinScreen()
 
   if (gb.buttons.pressed(BUTTON_A))
   {
-    GAME_END = false;
-    PLAYER_START_POSITION = false;
+    currentLevel++;
+    levelEnd = false;
+    if(currentLevel < MAX_LEVEL) {
+      initLevel();
+    }
   }
 }

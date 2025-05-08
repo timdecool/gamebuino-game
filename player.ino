@@ -69,11 +69,10 @@ void push(int direction, Element element)
     }
 }
 
-void drawPlayer()
+void initPlayer()
 {
-    if (!PLAYER_START_POSITION)
-    {
-        for (int y = 0; y < GRID_SIZE; y++)
+    bool playerStartPosition = false;
+    for (int y = 0; y < GRID_SIZE; y++)
         {
             for (int x = 0; x < GRID_SIZE; x++)
             {
@@ -81,14 +80,17 @@ void drawPlayer()
                 {
                     player.position.x = x * TILE_WIDTH + (TILE_WIDTH - player.width) / 2;
                     player.position.y = y * TILE_HEIGHT + (TILE_HEIGHT - player.height) / 2;
-                    PLAYER_START_POSITION = true;
+                    playerStartPosition = true;
                     break;
                 }
             }
-            if (PLAYER_START_POSITION)
+            if (playerStartPosition)
                 break;
         }
-    }
+}
+
+void drawPlayer()
+{
     gb.display.setColor(WHITE);
     gb.display.fillRect(player.position.x, player.position.y, player.width, player.height);
 }
