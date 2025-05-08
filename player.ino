@@ -86,7 +86,7 @@ void drawPlayer()
         {
             for (int x = 0; x < GRID_SIZE; x++)
             {
-                if (pattern[y][x] == -1)
+                if (pattern[y][x] == START)
                 {
                     player.position.x = x * TILE_WIDTH + (TILE_WIDTH - player.width) / 2;
                     player.position.y = y * TILE_HEIGHT + (TILE_HEIGHT - player.height) / 2;
