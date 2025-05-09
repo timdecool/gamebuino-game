@@ -1,11 +1,3 @@
-
-// CONST
-bool PLAYER_START_POSITION = false;
-extern const int GRID_SIZE;
-extern const int WALL_WIDTH;
-extern const int WALL_HEIGHT;
-extern int pattern[][16];
-
 bool canMove(Point position, Element element) 
 {
     // check x screen bounds
@@ -19,31 +11,62 @@ bool canMove(Point position, Element element)
     }
 
     // check collision with obstacles
-    return getPointValue(position.x, position.y) <= 0 
-        && getPointValue(position.x + element.width - 1, position.y) <= 0
-        && getPointValue(position.x + element.width - 1, position.y + element.height - 1) <= 0
-        && getPointValue(position.x, position.y + element.height - 1) <= 0;
+    // for rocks
+    if(element.id > 1) {
+        return !isRockAhead(position, element)
+        && (getPointValue(position.x, position.y) <= FLOOR 
+        && getPointValue(position.x + element.width - 1, position.y) <= FLOOR
+        && getPointValue(position.x + element.width - 1, position.y + element.height - 1) <= FLOOR
+        && getPointValue(position.x, position.y + element.height - 1) <= FLOOR)
+        || (getPointValue(position.x, position.y) == HOLE 
+        || getPointValue(position.x + element.width - 1, position.y) == HOLE
+        || getPointValue(position.x + element.width - 1, position.y + element.height - 1) == HOLE
+        || getPointValue(position.x, position.y + element.height - 1) == HOLE);
+    }
+    // for player
+    else {
+        return !isRockAhead(position, element)
+        && getPointValue(position.x, position.y) <= FLOOR 
+        && getPointValue(position.x + element.width - 1, position.y) <= FLOOR
+        && getPointValue(position.x + element.width - 1, position.y + element.height - 1) <= FLOOR
+        && getPointValue(position.x, position.y + element.height - 1) <= FLOOR;
+    }
+
 }
+
+Point getNewPosition(int direction, Element element) {
+    Point newPos;
+        switch(direction) {
+            case 1:
+                newPos = { element.position.x - 1, element.position.y };
+                break;
+            case 2:
+                newPos = { element.position.x, element.position.y - 1 };
+                break;
+            case 3:
+                newPos = { element.position.x + 1, element.position.y };
+                break;
+            case 4:
+                newPos = { element.position.x, element.position.y + 1 };
+                break;
+        }
+    return newPos;
+}
+
 
 Point move(int direction, Element element) 
 {
-    Point newPos;
-    switch(direction) {
-        case 1:
-            newPos = { element.position.x - 1, element.position.y };
-            break;
-        case 2:
-            newPos = { element.position.x, element.position.y - 1 };
-            break;
-        case 3:
-            newPos = { element.position.x + 1, element.position.y };
-            break;
-        case 4:
-            newPos = { element.position.x, element.position.y + 1 };
-            break;
-    }
+    Point newPos = getNewPosition(direction, element);
     if(canMove(newPos, element)) return newPos;        
     else return element.position;
+}
+
+void push(int direction, Element element) 
+{
+    Point newPos = getNewPosition(direction, element);
+    if(isRockAhead(newPos, element)) {
+        pushRock(newPos, element, direction);
+    }
 }
 
 void drawPlayer()
@@ -54,10 +77,10 @@ void drawPlayer()
         {
             for (int x = 0; x < GRID_SIZE; x++)
             {
-                if (pattern[y][x] == -1)
+                if (pattern[y][x] == START)
                 {
-                    player.position.x = x * WALL_WIDTH + (WALL_WIDTH - player.width) / 2;
-                    player.position.y = y * WALL_HEIGHT + (WALL_HEIGHT - player.height) / 2;
+                    player.position.x = x * TILE_WIDTH + (TILE_WIDTH - player.width) / 2;
+                    player.position.y = y * TILE_HEIGHT + (TILE_HEIGHT - player.height) / 2;
                     PLAYER_START_POSITION = true;
                     break;
                 }
