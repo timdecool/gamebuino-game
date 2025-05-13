@@ -37,16 +37,16 @@ bool canMove(Point position, Element element)
 Point getNewPosition(int direction, Element element) {
     Point newPos;
         switch(direction) {
-            case 1:
+            case LEFT:
                 newPos = { element.position.x - 1, element.position.y };
                 break;
-            case 2:
+            case UP:
                 newPos = { element.position.x, element.position.y - 1 };
                 break;
-            case 3:
+            case RIGHT:
                 newPos = { element.position.x + 1, element.position.y };
                 break;
-            case 4:
+            case DOWN:
                 newPos = { element.position.x, element.position.y + 1 };
                 break;
         }
@@ -72,15 +72,16 @@ void push(int direction, Element element)
 void initPlayer()
 {
     bool playerStartPosition = false;
-    for (int y = 0; y < GRID_SIZE; y++)
+    for (int y = 0; y < GRID_Y; y++)
         {
-            for (int x = 0; x < GRID_SIZE; x++)
+            for (int x = 0; x < GRID_X; x++)
             {
                 if (pattern[y][x] == START)
                 {
                     player.position.x = x * TILE_WIDTH + (TILE_WIDTH - player.width) / 2;
                     player.position.y = y * TILE_HEIGHT + (TILE_HEIGHT - player.height) / 2;
                     playerStartPosition = true;
+                    pattern[y][x] = FLOOR;
                     break;
                 }
             }

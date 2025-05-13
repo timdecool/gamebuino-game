@@ -6,9 +6,9 @@ int getPointValue(int x, int y) {
 
 void drawRoom()
 {
-    for (int i = 0; i < GRID_SIZE; i++)
+    for (int i = 0; i < GRID_X; i++)
     {
-        for (int j = 0; j < GRID_SIZE; j++)
+        for (int j = 0; j < GRID_Y; j++)
         {
             if (pattern[j][i] == WALL)
             {
