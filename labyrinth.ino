@@ -1,6 +1,10 @@
 #include <Gamebuino-Meta.h>
+#include "./sprites.h"
 
+
+// ---------------------
 // STRUCT
+// ---------------------
 struct Point
 {
   int x;
@@ -21,8 +25,16 @@ struct Rock {
   int yVelocity;
 };
 
+struct Player {
+  Element element;
+  bool moving;
+  int direction;
+};
 
+
+// ----------------------
 // GAME DATA
+// ----------------------
 const int MAX_LEVEL = 10;
 int currentId = 0;
 int currentLevel = 0;
@@ -37,14 +49,21 @@ const int DOWN = 4;
 const int PLAYER_HEIGHT = 6;
 const int PLAYER_WIDTH = 6;
 
-Element player = {
-  ++currentId,
-  { (gb.display.width() - PLAYER_WIDTH / 2) / 2, (gb.display.height() - PLAYER_HEIGHT / 2) / 2},
-  PLAYER_WIDTH,
-  PLAYER_HEIGHT
+Player player = {
+  {
+    ++currentId,
+    { (gb.display.width() - PLAYER_WIDTH / 2) / 2, (gb.display.height() - PLAYER_HEIGHT / 2) / 2},
+    PLAYER_WIDTH,
+    PLAYER_HEIGHT
+  },
+  false,
+  RIGHT
 };
 
+
+// --------------------------
 // MAP DATA
+// --------------------------
 
 const int GRID_X = 10;
 const int GRID_Y = 8;
@@ -58,15 +77,22 @@ const int FLOOR = 0;
 const int WALL = 1;
 const int ROCK = 2;
 const int HOLE = 3;
+const int FILLED = -3;
 
 int pattern[GRID_Y][GRID_X];
 
 // ROCK DATA
+Image avatar(PLAYER_DATA);
+
 const int MAX_ROCKS = 10;
 const int ROCK_SIZE = 8;
 Rock rocks[MAX_ROCKS];
 
+
+// -------------------------
 // GAME FUNCTIONS
+// -------------------------
+
 void setup()
 {
   gb.begin();
@@ -78,32 +104,41 @@ void loop()
   while (!gb.update());
   gb.display.clear();
 
-  if (levelEnd)
-  {
-    displayWinScreen();
-  }
-  else
-  {
-    input();
-    update();
-    checkWinCondition();
-    display();
-  }
+  input();
+  update();
+  display();
 }
 
 void input()
 {
   if(gb.buttons.repeat(BUTTON_A, 0)) {
-    if (gb.buttons.repeat(BUTTON_LEFT, 0)) push(LEFT, player);
-    else if (gb.buttons.repeat(BUTTON_UP, 0)) push(UP, player);
-    else if (gb.buttons.repeat(BUTTON_RIGHT, 0)) push(RIGHT, player);
-    else if (gb.buttons.repeat(BUTTON_DOWN, 0)) push(DOWN, player);
+    if (gb.buttons.repeat(BUTTON_LEFT, 0)) push(LEFT, player.element);
+    else if (gb.buttons.repeat(BUTTON_UP, 0)) push(UP, player.element);
+    else if (gb.buttons.repeat(BUTTON_RIGHT, 0)) push(RIGHT, player.element);
+    else if (gb.buttons.repeat(BUTTON_DOWN, 0)) push(DOWN, player.element);
   }
 
-  if (gb.buttons.repeat(BUTTON_LEFT, 0)) player.position = move(LEFT, player);
-  else if (gb.buttons.repeat(BUTTON_UP, 0)) player.position = move(UP, player);
-  else if (gb.buttons.repeat(BUTTON_RIGHT, 0)) player.position = move(RIGHT, player);
-  else if (gb.buttons.repeat(BUTTON_DOWN, 0)) player.position = move(DOWN, player);
+  if (gb.buttons.repeat(BUTTON_LEFT, 0)) {
+    player.element.position = move(LEFT, player.element);
+    player.moving = true;
+    player.direction = LEFT;
+  }
+  else if (gb.buttons.repeat(BUTTON_UP, 0)) {
+    player.element.position = move(UP, player.element);
+    player.moving = true;
+  }
+  else if (gb.buttons.repeat(BUTTON_RIGHT, 0)) {
+    player.element.position = move(RIGHT, player.element);
+    player.moving = true;
+    player.direction = RIGHT;
+  }
+  else if (gb.buttons.repeat(BUTTON_DOWN, 0)) {
+     player.element.position = move(DOWN, player.element);
+     player.moving = true;
+  }
+  else {
+    player.moving = false;
+  }
 
   if(gb.buttons.pressed(BUTTON_B)) {
     initLevel();
@@ -113,20 +148,28 @@ void input()
 void update() {
   updateRocksPosition();
   fillHoles();
+  checkWinCondition();
 }
 
 void display()
 {
-  gb.display.fill(LIGHTGREEN);
-  drawRoom();
-  drawRocks();
-  drawPlayer();
+  if(levelEnd) 
+  {
+    displayWinScreen();
+  }
+  else 
+  {
+    gb.display.fill(LIGHTGREEN);
+    drawRoom();
+    drawRocks();
+    drawPlayer();
+  }
 }
 
 void checkWinCondition()
 {
-  int playerGridX = player.position.x / TILE_WIDTH;
-  int playerGridY = player.position.y / TILE_HEIGHT;
+  int playerGridX = player.element.position.x / TILE_WIDTH;
+  int playerGridY = player.element.position.y / TILE_HEIGHT;
 
   if (playerGridX >= 0 && playerGridX < GRID_X &&
       playerGridY >= 0 && playerGridY < GRID_Y)
@@ -141,6 +184,7 @@ void checkWinCondition()
 void displayWinScreen()
 {
   gb.display.clear();
+  gb.display.setFontSize(1);
   gb.display.setColor(WHITE);
   gb.display.println("");
   gb.display.println("  FELICITATIONS!");

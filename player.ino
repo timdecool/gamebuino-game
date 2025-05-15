@@ -69,6 +69,7 @@ void push(int direction, Element element)
     }
 }
 
+
 void initPlayer()
 {
     bool playerStartPosition = false;
@@ -78,8 +79,8 @@ void initPlayer()
             {
                 if (pattern[y][x] == START)
                 {
-                    player.position.x = x * TILE_WIDTH + (TILE_WIDTH - player.width) / 2;
-                    player.position.y = y * TILE_HEIGHT + (TILE_HEIGHT - player.height) / 2;
+                    player.element.position.x = x * TILE_WIDTH + (TILE_WIDTH - player.element.width) / 2;
+                    player.element.position.y = y * TILE_HEIGHT + (TILE_HEIGHT - player.element.height) / 2;
                     playerStartPosition = true;
                     pattern[y][x] = FLOOR;
                     break;
@@ -92,6 +93,11 @@ void initPlayer()
 
 void drawPlayer()
 {
-    gb.display.setColor(WHITE);
-    gb.display.fillRect(player.position.x, player.position.y, player.width, player.height);
+    int16_t orientation;
+    if(player.direction == LEFT) orientation = player.element.width;
+    else orientation = -player.element.width;
+    if(!player.moving) {
+        avatar.setFrame(1);
+    }
+    gb.display.drawImage(player.element.position.x, player.element.position.y, avatar, orientation, player.element.height);
 }

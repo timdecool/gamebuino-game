@@ -1,6 +1,10 @@
 const int ROCK_MOVES[5] = {0, 1, 1, 2, 4};
 
 void initRocks() {
+    for(int i = 0; i < MAX_ROCKS; i++) {
+        rocks[i].element.width = 0;
+    }
+
     int found = 0;
     for(int y = 0; y < GRID_Y; y++) {
         for(int x = 0; x < GRID_X; x++) {
@@ -122,7 +126,7 @@ bool isInHole(Element element) {
 void fillHoles() {
     for(int i = 0; i < MAX_ROCKS; i++) {
         if(isInHole(rocks[i].element)) {
-            pattern[rocks[i].element.position.y / TILE_HEIGHT][rocks[i].element.position.x / TILE_WIDTH] = FLOOR;
+            pattern[rocks[i].element.position.y / TILE_HEIGHT][rocks[i].element.position.x / TILE_WIDTH] = FILLED;
             rocks[i].element.width = 0;            
         }
     }
@@ -138,5 +142,6 @@ void drawRocks() {
 
 void drawRock(Rock rock) {
     gb.display.setColor(DARKGRAY);
-    gb.display.fillRect(rock.element.position.x, rock.element.position.y, rock.element.width, rock.element.height);
+    gb.display.drawImage(rock.element.position.x, rock.element.position.y, ROCK_DATA);
+    // gb.display.fillRect(rock.element.position.x, rock.element.position.y, rock.element.width, rock.element.height);
 }
