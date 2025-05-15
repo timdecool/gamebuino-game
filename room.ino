@@ -1,4 +1,5 @@
-int getPointValue(int x, int y) {
+int getPointValue(int x, int y)
+{
     int gridX = x / TILE_WIDTH;
     int gridY = y / TILE_HEIGHT;
     return pattern[gridY][gridX];

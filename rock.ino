@@ -26,7 +26,8 @@ void initRocks() {
     }
 }
 
-bool isRockAhead(Point position, Element element) {
+bool isRockAhead(Point position, Element element)
+{
     bool isRock = false;
     for(int i = 0; i < MAX_ROCKS; i++) {
         if(rocks[i].element.width > 0 

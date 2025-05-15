@@ -11,7 +11,7 @@ struct Point
   int y;
 };
 
-struct Element 
+struct Element
 {
   int id;
   Point position;
@@ -39,6 +39,7 @@ const int MAX_LEVEL = 10;
 int currentId = 0;
 int currentLevel = 0;
 bool levelEnd = false;
+bool gameStarted = false;
 
 const int LEFT = 1;
 const int UP = 2;
@@ -96,7 +97,6 @@ Rock rocks[MAX_ROCKS];
 void setup()
 {
   gb.begin();
-  initLevel();
 }
 
 void loop()
@@ -140,7 +140,8 @@ void input()
     player.moving = false;
   }
 
-  if(gb.buttons.pressed(BUTTON_B)) {
+  if (gb.buttons.pressed(BUTTON_B))
+  {
     initLevel();
   }
 }
@@ -153,10 +154,8 @@ void update() {
 
 void display()
 {
-  if(levelEnd) 
-  {
-    displayWinScreen();
-  }
+  if(!gameStarted) displayWelcomeScreen();
+  else if(levelEnd) displayWinScreen();
   else 
   {
     gb.display.fill(LIGHTGREEN);
@@ -199,8 +198,34 @@ void displayWinScreen()
   {
     currentLevel++;
     levelEnd = false;
-    if(currentLevel < MAX_LEVEL) {
+    if (currentLevel < MAX_LEVEL)
+    {
       initLevel();
     }
+  }
+}
+
+void displayWelcomeScreen()
+{
+  gb.display.clear();
+
+  gb.display.setColor(YELLOW);
+  gb.display.setCursor(10, 5);
+  gb.display.println("LABYRINTHE");
+
+  gb.display.setColor(WHITE);
+  gb.display.setCursor(5, 20);
+  gb.display.println("CROIX: DEPLAC.");
+  gb.display.setCursor(5, 30);
+  gb.display.println("A+CROIX: POUSSER");
+
+  gb.display.setColor(GREEN);
+  gb.display.setCursor(5, 40);
+  gb.display.println("A: JOUER");
+
+  if (gb.buttons.pressed(BUTTON_A))
+  {
+    initLevel();
+    gameStarted = true;
   }
 }
