@@ -1,7 +1,7 @@
 # GAMEBUINO
 Jeu développé par :
-- Timothé DECOOL
-- Lucas BERTHET
+- BERTHET Lucas
+- DECOOL Timothé
 
 # JEU
 Il faut trouver la sortie du labyrinthe. Les rochers sur la route peuvent combler les trous.

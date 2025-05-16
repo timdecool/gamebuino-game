@@ -7,9 +7,9 @@ int getPointValue(int x, int y)
 
 void drawRoom()
 {
-    for (int i = 0; i < GRID_SIZE; i++)
+    for (int i = 0; i < GRID_X; i++)
     {
-        for (int j = 0; j < GRID_SIZE; j++)
+        for (int j = 0; j < GRID_Y; j++)
         {
             if (pattern[j][i] == WALL)
             {
@@ -27,20 +27,25 @@ void drawRoom()
             {
                 drawEnd(i, j);
             }
+            else if (pattern[j][i] == FILLED)
+            {
+                drawFilled(i, j);
+            }
+            else {
+                drawFloor(i, j);
+            }
         }
     }
 }
 
 void drawWall(int i, int j)
 {
-    gb.display.setColor(BROWN);
-    gb.display.fillRect(i * TILE_WIDTH, j * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
+    gb.display.drawImage(i * TILE_WIDTH, j * TILE_HEIGHT, WALL_DATA);
 }
 
 void drawHole(int i, int j)
 {
-    gb.display.setColor(BLACK);
-    gb.display.fillRect(i * TILE_WIDTH, j * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
+    gb.display.drawImage(i * TILE_WIDTH, j * TILE_HEIGHT, HOLE_DATA);
 }
 
 void drawStart(int i, int j)
@@ -50,6 +55,13 @@ void drawStart(int i, int j)
 }
 void drawEnd(int i, int j)
 {
-    gb.display.setColor(RED);
-    gb.display.fillRect(i * TILE_WIDTH, j * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
+    gb.display.drawImage(i * TILE_WIDTH, j * TILE_HEIGHT, END_DATA);
+
+}
+void drawFloor(int i, int j) {
+    gb.display.drawImage(i * TILE_WIDTH, j * TILE_HEIGHT, FLOOR_DATA);
+}
+
+void drawFilled(int i, int j) {
+    gb.display.drawImage(i * TILE_WIDTH, j * TILE_HEIGHT, FILLED_DATA);
 }

@@ -28,21 +28,20 @@ bool canMove(Point position, Element element)
 Point getNewPosition(int direction, Element element)
 {
     Point newPos;
-    switch (direction)
-    {
-    case 1:
-        newPos = {element.position.x - 1, element.position.y};
-        break;
-    case 2:
-        newPos = {element.position.x, element.position.y - 1};
-        break;
-    case 3:
-        newPos = {element.position.x + 1, element.position.y};
-        break;
-    case 4:
-        newPos = {element.position.x, element.position.y + 1};
-        break;
-    }
+        switch(direction) {
+            case LEFT:
+                newPos = { element.position.x - 1, element.position.y };
+                break;
+            case UP:
+                newPos = { element.position.x, element.position.y - 1 };
+                break;
+            case RIGHT:
+                newPos = { element.position.x + 1, element.position.y };
+                break;
+            case DOWN:
+                newPos = { element.position.x, element.position.y + 1 };
+                break;
+        }
     return newPos;
 }
 
@@ -64,28 +63,35 @@ void push(int direction, Element element)
     }
 }
 
+
 void initPlayer()
 {
     bool playerStartPosition = false;
-    for (int y = 0; y < GRID_SIZE; y++)
-    {
-        for (int x = 0; x < GRID_SIZE; x++)
+    for (int y = 0; y < GRID_Y; y++)
         {
-            if (pattern[y][x] == START)
+            for (int x = 0; x < GRID_X; x++)
             {
-                player.position.x = x * TILE_WIDTH + (TILE_WIDTH - player.width) / 2;
-                player.position.y = y * TILE_HEIGHT + (TILE_HEIGHT - player.height) / 2;
-                playerStartPosition = true;
-                break;
+                if (pattern[y][x] == START)
+                {
+                    player.element.position.x = x * TILE_WIDTH + (TILE_WIDTH - player.element.width) / 2;
+                    player.element.position.y = y * TILE_HEIGHT + (TILE_HEIGHT - player.element.height) / 2;
+                    playerStartPosition = true;
+                    pattern[y][x] = FLOOR;
+                    break;
+                }
             }
+            if (playerStartPosition)
+                break;
         }
-        if (playerStartPosition)
-            break;
-    }
 }
 
 void drawPlayer()
 {
-    gb.display.setColor(WHITE);
-    gb.display.fillRect(player.position.x, player.position.y, player.width, player.height);
+    int16_t orientation;
+    if(player.direction == LEFT) orientation = player.element.width;
+    else orientation = -player.element.width;
+    if(!player.moving) {
+        avatar.setFrame(1);
+    }
+    gb.display.drawImage(player.element.position.x, player.element.position.y, avatar, orientation, player.element.height);
 }
