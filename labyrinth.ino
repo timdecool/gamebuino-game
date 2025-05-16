@@ -35,7 +35,7 @@ struct Player {
 // ----------------------
 // GAME DATA
 // ----------------------
-const int MAX_LEVEL = 10;
+const int MAX_LEVEL = 6;
 int currentId = 0;
 int currentLevel = 0;
 bool levelEnd = false;
@@ -176,6 +176,7 @@ void checkWinCondition()
     if (pattern[playerGridY][playerGridX] == END)
     {
       levelEnd = true;
+      clearRocks();
     }
   }
 }
@@ -198,10 +199,11 @@ void displayWinScreen()
   {
     currentLevel++;
     levelEnd = false;
-    if (currentLevel < MAX_LEVEL)
+    if (currentLevel == MAX_LEVEL)
     {
-      initLevel();
+      currentLevel = 0;
     }
+    initLevel();
   }
 }
 
@@ -218,9 +220,11 @@ void displayWelcomeScreen()
   gb.display.println("CROIX: DEPLAC.");
   gb.display.setCursor(5, 30);
   gb.display.println("A+CROIX: POUSSER");
+  gb.display.setCursor(5, 40);
+  gb.display.println("B : RESET");
 
   gb.display.setColor(GREEN);
-  gb.display.setCursor(5, 40);
+  gb.display.setCursor(5, 50);
   gb.display.println("A: JOUER");
 
   if (gb.buttons.pressed(BUTTON_A))

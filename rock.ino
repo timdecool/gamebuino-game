@@ -1,10 +1,12 @@
 const int ROCK_MOVES[5] = {0, 1, 1, 2, 4};
 
-void initRocks() {
+void clearRocks() {
     for(int i = 0; i < MAX_ROCKS; i++) {
         rocks[i].element.width = 0;
     }
+}
 
+void initRocks() {
     int found = 0;
     for(int y = 0; y < GRID_Y; y++) {
         for(int x = 0; x < GRID_X; x++) {
@@ -118,7 +120,8 @@ void updateRocksPosition() {
 }
 
 bool isInHole(Element element) {
-    return getPointValue(element.position.x, element.position.y) == 3 
+    return element.width != 0
+        && getPointValue(element.position.x, element.position.y) == 3 
         && getPointValue(element.position.x + element.width - 1, element.position.y) == 3
         && getPointValue(element.position.x + element.width - 1, element.position.y + element.height - 1) == 3
         && getPointValue(element.position.x, element.position.y + element.height - 1) == 3;
